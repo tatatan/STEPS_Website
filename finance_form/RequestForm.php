@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title> STEPS : Finance Request Form </title>
 		<header><h2> Finance Request Form</h2></header>
+		<!--ffuhdfuhodfhjdohjodifh-->
 	</head>
 	<body>
 
@@ -21,6 +22,7 @@
 				newrow.cells[2].innerHTML = 1;
 
 				tabbody.appendChild(newrow);
+				var a = 1;
 			}
 
 			function getInformation(){
