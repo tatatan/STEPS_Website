@@ -4,6 +4,7 @@ include 'navbar.php';
 ?>
 
 <html>
+<head><title> STEPS member </title></head>
 <!-- registration /-->
 <div class="container">
   <h4 class="text-primary"> Register to STEPS website </h4>
