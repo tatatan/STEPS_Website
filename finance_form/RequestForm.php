@@ -4,86 +4,99 @@
 		<meta charset="UTF-8">
 		<title> STEPS : Finance Request Form </title>
 		<header><h2> Finance Request Form</h2></header>
-		<!--ffuhdfuhodfhjdohjodifh-->
 	</head>
 	<body>
+		เลขที่ใบเสนอซื้อ:
+		<?php 
+			$servername = "localhost";
+			$username = "root";
+			$password = "";
+			$db = "mydb";
 
-		<script>
-			var count = 1;
-			var tabbody;
-			function cloneRow(){
-				count = count +1;
-				tabbody = document.getElementById('tablebody');
+			$conn = new mysqli($servername, $username, $password ,$db);
 
-				var row = document.getElementById("firstRow");
-				var newrow = row.cloneNode(true);
-				newrow.cells[0].innerHTML = count;
-				newrow.cells[1].innerHTML = "รายละเอียด...";
-				newrow.cells[2].innerHTML = 1;
+			if ($conn->connect_error) {
+		    	die("Connection failed: " . $conn->connect_error);
+			} 
 
-				tabbody.appendChild(newrow);
-				var a = 1;
-			}
+			$cmd = "SELECT FinanceRequestID FROM FinanceRequests";
+			$result = $conn->query($cmd);
 
-			function getInformation(){
-				detail = [];
-				tabbody = document.getElementById('tablebody');
-				for (i = 0; i < tabbody.rows.length; i++) {
-					row = tabbody.rows[i];
-					tmp = [];
-					//for(j = 0; j < row.cells.length; j++){
-						//cell = row.cells[j];
-						//tmp.push(cell.innerHTML);
-					//}	
-					l=[tabbody.rows[i].cells[1].innerHTML,tabbody.rows[i].cells[2].innerHTML];
-					detail.push(l);
-						//list2.push(tabbody.rows[0].cells[2].innerHTML);
-
-					
-					//list.push(tmp);
-					//list2[column1.innerHTML]=row.cell[2].innerHTML;
-				}
-				//alert(list2[]);
-			}
-		</script>
+			if ($result->num_rows == 0) {
+		   		echo "1";
+		   	}
+		   	else {
+		   		echo $result->num_rows+1;
+		   	} 
+		   		
+		   	$conn->close();
+		?>
 		<form action="" method="post">
-			ฝ่าย <input type=text name="Field" placeholder="ฝ่ายของคุณ"> 
-			โครง <input type=text name="Project" placeholder="โครงการ"> <br>
-			ผู้ติดต่อ <input type=text name="Proposer" placeholder="ชื่อผู้ติดต่อ"> 
-			เบอร์ติดต่อ <input type=text name="PhoneNumber" placeholder="090-xxx-xxx">
-		<br>
-		กรอกรายละเอียดรายการของคุณบนตาราง<br>	
-		<table>
-			<style>
-				table, th, td {
-				border: 1px solid black;
-				border-collapse: collapse;
-				}
-			</style>
-			<thead>
-				<tr>
-					<th>ลำดับ</th><th>รายการ</th><th>จำนวน</th>
+			ฝ่าย <input type=text name="field" placeholder="ฝ่ายของคุณ"> 
+			โครง <input type=text name="project" placeholder="โครงการ"> <br>
+			ผู้ติดต่อ <input type=text name="proposer" placeholder="ชื่อผู้ติดต่อ"> 
+			เบอร์ติดต่อ <input type=text name="phoneNumber" placeholder="090-xxx-xxx"><br><br>
+			รายการเสนอซื้อ<br>	
 
-				</tr>
-			</thead>
-			<tbody id='tablebody'>
-				<tr id="firstRow">
-					<td>1</td>
-					<td contenteditable="true">กรอกรายละเอียดที่นี่</td>
-					<td contenteditable="true">1</td>
-				</tr>
-			</tbody>
-		</table>
+			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+			<div id="warpper">
+				<div id="1">
+					<label>1</label>
+					<input name="details[]" type="text" placeholder="รายละเอียด">
+					<input name="quantitys[]" type="number" placeholder="จำนวน" class="quantity">
+					<input name="pricePerUnit[]" type="number" placeholder="ราคาต่อหน่วย" class="price">
+				</div>
+			</div>
+			ราคารวม: <label name ="totalprice" id='total'>0</label>
+			<br><button id="add">เพิ่มรายการ</button>
+			<button id="remove">ลบรายการล่าสุด</button><br><br>
 
-		<input type='button' value="เพิ่มรายการ" onclick='cloneRow();return false;'><br>
-		<input type='submit' value="ส่งแบบฟอร์ม" onclick='getInformation();return false;'>
+			<script>
+				$(document).ready(function() {
+					var nums = 1;
+					var totalRow = 0;
 
+					$.fn.totalPrice = function(x) {
+						var t = 0;
+						$('.price').each(function(i, obj){
+							t += parseInt($(obj).val())*parseInt($('.quantity').eq(i).val());
+						});
+						$('#total').html(t);
+					};
+
+					$("#add").click(function(e) {
+						e.preventDefault();
+						nums++;
+						$(warpper).append('<div id="'+nums+'"><label>'+nums+' </label><input name="details[]" type="text" placeholder="รายละเอียด"> <input name="quantity[]" type="number" placeholder="จำนวน" class="quantity"> <input name="pricePerUnit[]" type="number" placeholder="ราคาต่อหน่วย" class="price"></div>');
+						$('.price').keyup($.fn.totalPrice);
+					});
+					$("#remove").click(function(e) {
+						if (nums>0){
+							e.preventDefault();
+							$("#"+String(nums)).remove();
+							nums--;
+
+							$.fn.totalPrice(1234);
+						}
+					});
+					
+					$('#warpper').keyup($.fn.totalPrice);
+				});
+			</script>
+
+			รายละเอียดเพิ่มเติม (สถานที่สั่งซื้อ, ต้องการนำไปใช้เพื่อทำอะไร, กำหนดการใช้)<br>
+			<textarea name="moreDetails" row="10" cols="30" placeholder="กรอกรายละเอียด..."></textarea>
+
+			<input type="submit" value="ส่งแบบฟอร์ม" >
 		</form>
 
-
 		<?php 
-			echo detail;
-			if (!empty ($_POST["Field"]) and !empty ($_POST["Project"]) and !empty($_POST["Proposer"]) and !empty ($_POST["PhoneNumber"]) and detail) {
+			if(!(empty($_POST['field']) or 
+				empty($_POST['project']) or 
+				empty($_POST['proposer']) or 
+				empty($_POST['phoneNumber']) or
+				empty($_POST['moreDetails'])
+			)){
 				$servername = "localhost";
 				$username = "root";
 				$password = "";
@@ -91,37 +104,35 @@
 
 				$conn = new mysqli($servername, $username, $password ,$db);
 
-			if ($conn->connect_error) {
-    			die("Connection failed: " . $conn->connect_error);
-			} 
+				if ($conn->connect_error) {
+			    	die("Connection failed: " . $conn->connect_error);
+				} 
+
+				$cmd = "INSERT INTO FinanceRequests (Field,Proposer,PhoneNumber,Project,Approvment,Status,Comment) 
+								VALUES ('".$_POST['field']."' , '".$_POST['proposer']."', '".$_POST['phoneNumber']."' , 
+								'".$_POST['project']."', 0, 'รอการอนุมัติ', '".$_POST['moreDetails']."')" ;
 
 
-				$fname_str = $_POST["fname"];
-				$lname_str = $_POST["lname"];
-				$sex_str = $_POST["sex"];
+				if ($conn->query($cmd) === TRUE) {
+			   		echo "<script type='text/javascript'>alert('ส่งแบบฟอร์มแล้ว รอการอนุมัติจากฝ่ายการเงิน');</script>";
+			    }else{
+			    	echo "Error: " . $cmd . "<br>" . $conn->error;
+				}
 
-		if(!empty($_POST['hobby'])) {
-					$hobby_str = implode(", ",$_POST['hobby']); 
-			} else $hobby_str = "-";
+				for ($int = 0 ; $int < count($_POST['details']); $int++) {
+					$cmd2 = "INSERT INTO FinanceDetails (Detail, Quantity, PricePerUnit)
+							VALUES ('".$_POST['details'][$int]."' , '".$_POST['quantity'][$int]."', '".$_POST['pricePerUnit'][$int]."')" ;
+					$conn->query($cmd2) ;
+				}
 
-		$date_add = "INSERT INTO information (First_Name,Last_Name,Sex,Hobby)	
-		VALUES ('".$fname_str."' , '".$lname_str."' , '".$sex_str."','".$hobby_str."')" ; 
+				$conn->close();
+				header ("Location: RequestForm.php");
+			}
 
-		if ($conn->query($date_add) === TRUE) {
-    		echo "Success!";
-    	}else {
-    		echo "Error: " . $date_add . "<br>" . $conn->error;
+		?>
 
-    		$conn->close();
-		}
-			
-
-		}
-
-	?>
 	</body>
 </html>
-
 
 
 
