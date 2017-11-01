@@ -9,8 +9,9 @@
 		<header><h2> Finance Request Form</h2></header>
 	</head>
 	<body>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		เลขที่ใบเสนอซื้อ:
-		<?php 
+		<?php
 			$servername = "localhost";
 			$username = "root";
 			$password = "";
@@ -20,7 +21,7 @@
 
 			if ($conn->connect_error) {
 		    	die("Connection failed: " . $conn->connect_error);
-			} 
+			}
 
 			$cmd = "SELECT FinanceRequestID FROM FinanceRequests";
 			$result = $conn->query($cmd);
@@ -30,8 +31,8 @@
 		   	}
 		   	else {
 		   		echo $result->num_rows+1;
-		   	} 
-		   		
+		   	}
+
 		   	$conn->close();
 		?>
 		<form action="" method="post">
@@ -74,9 +75,9 @@
 			?>		
 
 			เบอร์ติดต่อ <input type=text name="phoneNumber" placeholder="090-xxx-xxx"><br><br>
-			รายการเสนอซื้อ<br>	
+			รายการเสนอซื้อ<br>
 
-			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
 			<div id="warpper">
 				<div id="1">
 					<label>1</label>
@@ -117,7 +118,7 @@
 							$.fn.totalPrice(1234);
 						}
 					});
-					
+
 					$('#warpper').keyup($.fn.totalPrice);
 				});
 			</script>
@@ -164,6 +165,7 @@
 				}
 
 				for ($int = 0 ; $int < count($_POST['details']); $int++) {
+
 					$cmd2 = "INSERT INTO FinanceDetails (Detail, Quantity, PricePerUnit, FinanceRequestID)
 							VALUES ('".$_POST['details'][$int]."' , '".$_POST['quantitys'][$int]."', '".$_POST['pricePerUnit'][$int]."', last_insert_id())" ;
 
@@ -171,6 +173,7 @@
 					if ($conn->query($cmd2) === FALSE) {
 				    	echo "Error: " . $cmd2 . "<br>" . $conn->error;
 					}
+
 				}
 
 				$conn->close();
@@ -181,3 +184,4 @@
 
 	</body>
 </html>
+
