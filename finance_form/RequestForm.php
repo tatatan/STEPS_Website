@@ -1,3 +1,6 @@
+<?php
+	session_start();
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -32,9 +35,44 @@
 		   	$conn->close();
 		?>
 		<form action="" method="post">
-			ฝ่าย <input type=text name="field" placeholder="ฝ่ายของคุณ"> 
 			โครง <input type=text name="project" placeholder="โครงการ"> <br>
-			ผู้ติดต่อ <input type=text name="proposer" placeholder="ชื่อผู้ติดต่อ"> 
+			<?php 
+				if (!empty($_SESSION['nickname'])){
+					$checkfield = ""
+					if ($_SESSION['team']=1){
+						$checkfield = "President & Vice president";
+					}
+					elseif ($_SESSION['team']=2){
+						$checkfield = "Operation";
+					}
+					elseif ($_SESSION['team']=3){
+						$checkfield = "Community relations";
+					}
+					elseif ($_SESSION['team']=4){
+						$checkfield = "Marketing";
+					}
+					elseif ($_SESSION['team']=5){
+						$checkfield = "Finance and Accounting";
+					}
+					elseif ($_SESSION['team']=6){
+						$checkfield = "Organization Development";
+					}
+					elseif ($_SESSION['team']=7){
+						$checkfield = "Human Resources";
+					}
+					elseif ($_SESSION['team']=8){
+						$checkfield = "Corporate Communication";
+					}
+		
+					echo "ผู้ติดต่อ <input type='text' name='field' value='<?php echo $_SESSION['nickname'];?' disabled> 
+							ฝ่าย <input type='text' value='<?php echo $checkfield; ?>' disabled>" ;
+				}else {
+					echo "ผู้ติดต่อ <input type='text' name='proposer' placeholder='ชื่อผู้ติดต่อ'>
+							ฝ่าย <input type=text name='field' placeholder='ฝ่ายของคุณ'>"; 
+				}
+				
+			?>		
+
 			เบอร์ติดต่อ <input type=text name="phoneNumber" placeholder="090-xxx-xxx"><br><br>
 			รายการเสนอซื้อ<br>	
 
@@ -43,8 +81,8 @@
 				<div id="1">
 					<label>1</label>
 					<input name="details[]" type="text" placeholder="รายละเอียด">
-					<input name="quantitys[]" type="number" placeholder="จำนวน" class="quantity">
-					<input name="pricePerUnit[]" type="number" placeholder="ราคาต่อหน่วย" class="price">
+					<input name="quantitys[]" type="text" placeholder="จำนวน" class="quantity">
+					<input name="pricePerUnit[]" type="text" placeholder="ราคาต่อหน่วย" class="price">
 				</div>
 			</div>
 			ราคารวม: <label name ="totalprice" id='total'>0</label>
@@ -67,7 +105,7 @@
 					$("#add").click(function(e) {
 						e.preventDefault();
 						nums++;
-						$(warpper).append('<div id="'+nums+'"><label>'+nums+' </label><input name="details[]" type="text" placeholder="รายละเอียด"> <input name="quantity[]" type="number" placeholder="จำนวน" class="quantity"> <input name="pricePerUnit[]" type="number" placeholder="ราคาต่อหน่วย" class="price"></div>');
+						$(warpper).append('<div id="'+nums+'"><label>'+nums+' </label><input name="details[]" type="text" placeholder="รายละเอียด"> <input name="quantitys[]" type="text" placeholder="จำนวน" class="quantity"> <input name="pricePerUnit[]" type="text" placeholder="ราคาต่อหน่วย" class="price"></div>');
 						$('.price').keyup($.fn.totalPrice);
 					});
 					$("#remove").click(function(e) {
@@ -90,13 +128,19 @@
 			<input type="submit" value="ส่งแบบฟอร์ม" >
 		</form>
 
-		<?php 
+		<?php
+			//header("charset=utf-8");
+			//echo count($_POST['details']);
+			//echo count($_POST['quantitys']);
+			//echo count($_POST['pricePerUnit']);
+
 			if(!(empty($_POST['field']) or 
 				empty($_POST['project']) or 
 				empty($_POST['proposer']) or 
 				empty($_POST['phoneNumber']) or
 				empty($_POST['moreDetails'])
 			)){
+				echo "<script>alert('abcderthgfads')</script>";
 				$servername = "localhost";
 				$username = "root";
 				$password = "";
@@ -108,10 +152,10 @@
 			    	die("Connection failed: " . $conn->connect_error);
 				} 
 
+				mysql_query("SET NAMES utf8");
 				$cmd = "INSERT INTO FinanceRequests (Field,Proposer,PhoneNumber,Project,Approvment,Status,Comment) 
 								VALUES ('".$_POST['field']."' , '".$_POST['proposer']."', '".$_POST['phoneNumber']."' , 
-								'".$_POST['project']."', 0, 'รอการอนุมัติ', '".$_POST['moreDetails']."')" ;
-
+								'".$_POST['project']."', 0, 'Waiting', '".$_POST['moreDetails']."')" ;
 
 				if ($conn->query($cmd) === TRUE) {
 			   		echo "<script type='text/javascript'>alert('ส่งแบบฟอร์มแล้ว รอการอนุมัติจากฝ่ายการเงิน');</script>";
@@ -120,9 +164,13 @@
 				}
 
 				for ($int = 0 ; $int < count($_POST['details']); $int++) {
-					$cmd2 = "INSERT INTO FinanceDetails (Detail, Quantity, PricePerUnit)
-							VALUES ('".$_POST['details'][$int]."' , '".$_POST['quantity'][$int]."', '".$_POST['pricePerUnit'][$int]."')" ;
-					$conn->query($cmd2) ;
+					$cmd2 = "INSERT INTO FinanceDetails (Detail, Quantity, PricePerUnit, FinanceRequestID)
+							VALUES ('".$_POST['details'][$int]."' , '".$_POST['quantitys'][$int]."', '".$_POST['pricePerUnit'][$int]."', last_insert_id())" ;
+
+
+					if ($conn->query($cmd2) === FALSE) {
+				    	echo "Error: " . $cmd2 . "<br>" . $conn->error;
+					}
 				}
 
 				$conn->close();
@@ -133,7 +181,3 @@
 
 	</body>
 </html>
-
-
-
-
