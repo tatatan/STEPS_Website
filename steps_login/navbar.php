@@ -23,14 +23,14 @@ session_start();
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
-        <li><a href="member.php">Member</a></li>
+        <li><a href="#">Page 1</a></li>
         <li><a href="#">Page 2</a></li> 
         <li><a href="#">Page 3</a></li> 
 
         <!-- link for only-member page /-->
          <?php
          if((isset($_SESSION['facebook_id']))and(isset($_SESSION['nickname']))){
-           echo "<li><a href=\"#\">Page 4</a></li>";
+           echo "<li><a href=\"member.php\"> Staff </a></li>";
            echo "<li><a href=\"#\">Page 5</a></li>";
          }
          ?>
