@@ -40,7 +40,7 @@ session_start();
       <?php
       if((isset($_SESSION['facebook_id']))and(isset($_SESSION['nickname']))){          
           $student_id = $_SESSION['student_id'];
-          echo "<li><a href=\"user.php\"><span class=\"glyphicon glyphicon-user\"></span>".$_SESSION['nickname']."    </a></li>
+          echo "<li><a href=\"user.php\"><span class=\"glyphicon glyphicon-user\"></span>".$_SESSION['nickname']."   </a></li>
         <li><a href=\"logout.php\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a></li>";
       }
       else{

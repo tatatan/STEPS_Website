@@ -39,10 +39,11 @@
 
 
             $conn  = new mysqli("localhost", "root", "", "step");
-            $query = sprintf("SELECT email, password, nickname, fbid, team,studentid, nameeng FROM members
+            $query = sprintf("SELECT email, password, nickname, fbid, team ,studentid, nameeng, tel FROM members
                     WHERE fbid = $facebook_id ");
             echo $query;
 
+            
             $result = mysqli_query($conn,$query);
             
 
@@ -53,13 +54,20 @@
             else{
 
                 $row=$result->fetch_assoc();
-                // echo $row['Email'];
+                
+                $team_id = $row['team'] ;
+                $query_team = sprintf("SELECT team_id,name FROM team WHERE team_id = $team_id");
+                $result_team = $connect->query($query_team);
+                $row_team=$result_team->fetch_assoc();
+                
                 $_SESSION['nickname'] = $row['nickname'];
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['facebook_id'] = $row['fbid'];
-                $_SESSION['team'] = $row['team'];
+                $_SESSION['team_id'] = $row['team'];
+                $_SESSION['team_name'] = $row_team['name'];
                 $_SESSION['student_id'] = $row['studentid'];
                 $_SESSION['nameeng'] = $row['nameeng'];
+                $_SESSION['tel'] = $row['tel'];
                 header('Location: index.php');
             }
 
