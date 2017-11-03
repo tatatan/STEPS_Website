@@ -3,11 +3,6 @@
 
 include ('navbar.php');
 include ('connect.php');
-$team_id = $_SESSION['team'];
- $query_team = "SELECT name FROM team WHERE team_id=$team_id;";
-      $result_team = $connect->query($query_team);
-      $row_team = $result_team->fetch_assoc();
-      $_SESSION['team_name'] = $row_team['name'];
 
  ?>
 
@@ -25,6 +20,8 @@ $team_id = $_SESSION['team'];
         <TD> team  </TD><TD>  :  <?php echo $_SESSION['team_name'];?> </TD></TR>
     <TR>
         <TD> email  </TD><TD>  :  <?php echo $_SESSION['email'];?> </TD></TR>
+    <TR>
+        <TD> tel  </TD><TD>  :  <?php echo $_SESSION['tel'];?> </TD></TR>
     </TABLE>
 </div>
 
