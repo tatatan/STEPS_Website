@@ -5,52 +5,56 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title> STEPS : Show Finance Request  </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../css/bootstrap_4.0/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/main.css">
+		<script src="../js/jquery_3.2.1/jquery-3.2.1.slim.min.js"></script>
+		<script src="../js/popper_1.12.3/popper.min.js"></script>
+		<script src="../js/bootstrap_4.0/bootstrap.min.js"></script>
+		<title> STEPS : Show Finance All Requisitions  </title>
 	</head>
 	<body>
+		<div class="container">
+			<div class="page-header"><h1>Finance All Requisitions</h1></div>
 		<script>
 			function showDetail(id){
 				document.location.href = 'ShowFinanceDetail.php?id='+id;
 
 			}
 		</script>
-		<?php 
-			//รับSessionฝ่ายจาก login 
-			//if ($_SESSION['team'] == 5){
-				$servername = "localhost";
-				$username = "root";
-				$password = "";
-				$db = "mydb";
+		
+			<?php 
+				//รับSessionฝ่ายจาก login 
+				if ($_SESSION['team_id'] == 5){
+					include("connect.php");
 
+					$show_info = "SELECT * FROM financerequests";
+					$result = $conn->query($show_info);
 
-				$conn = new mysqli($servername, $username, $password, $db);
+					echo '<div class="container">';
+					if ($result->num_rows > 0) {
+					    echo "<table class='table table-striped'><tr><th>#</th><th>โครงการ</th><th>ฝ่าย</th><th>ผู้เสนอ</th><th>การอนุมัติ</th><th>สถานะ</th><th><center>รายละเอียดเพิ่มเติม</center></th></tr>";
+					    while($row = $result->fetch_assoc()) {
+					        echo "<tr><td>" . $row["FinanceRequestID"]. "</td>
+					        		<td>" . $row["Project"]. " </td>
+					        		<td>" . $row["Field"]. "</td>
+					        		<td>". $row["Proposer"]. "</td>
+					        		<td>". ($row["Approvement"]==0 ? "รอการอนุมัติ" : "อนุมัติแล้ว") . "</td>
+					        		<td>". $row["Status"]. "</td>
+					        		<td><center><button type='button' class='btn-primary' onclick='showDetail(\"".$row["FinanceRequestID"]."\")'>Info</button></center></td>
+					        		</tr>
+					        		";
 
-				if ($conn->connect_error) {
-			    	die("Connection failed: " . $conn->connect_error);
-				} 
-
-				$show_info = "SELECT * FROM financerequests";
-				$result = $conn->query($show_info);
-
-				if ($result->num_rows > 0) {
-				    echo "<table><tr><th>No.</th><th>โครงการ</th><th>ฝ่าย</th><th>ผู้เสนอ</th><th>การอนุมัติ</th><th>สถานะ</th><th>รายละเอียดเพิ่มเติม</th></tr>";
-				    while($row = $result->fetch_assoc()) {
-				        echo "<tr><td>" . $row["FinanceRequestID"]. "</td>
-				        		<td>" . $row["Project"]. " </td>
-				        		<td>" . $row["Field"]. "</td>
-				        		<td>". $row["Proposer"]. "</td>
-				        		<td>". ($row["Approvement"]==0 ? "รอการอนุมัติ" : "อนุมัติแล้ว") . "</td>
-				        		<td>". $row["Status"]. "</td>
-				        		<td><button type='button' onclick='showDetail(\"".$row["FinanceRequestID"]."\")'>More...</button></td>
-				        		</tr>
-				        		";
-
-			    	}
-				} else {
-				    echo "0 results";
+				    	}
+				    	echo "</table>";
+					} else {
+					    echo "0 results";
+					}
+					echo "</div>";
+					$conn->close();
 				}
-				$conn->close();
-			//}
-	?>
+			?>
+		<p class="text-right"><button class='btn btn'><a href="RequestForm.php">กลับไปหน้าฟอร์ม</a></button></p>
+		</div>
 	</body>
 </html>
