@@ -1,5 +1,5 @@
 <?php
-	$cmd="CREATE TABLE if not exists financerequests( 
+	$cmd="CREATE TABLE if not exists financerequests1( 
 			FinanceRequestID INT AUTO_INCREMENT PRIMARY KEY,
 			Field TEXT NOT NULL,
 			Proposer TEXT NOT NULL,
@@ -9,7 +9,7 @@
 			Status TEXT NOT NULL,
 			Comment TEXT NOT NULL
 			)";
-	$cmd2="CREATE TABLE if not exists financedetails( 
+	$cmd2="CREATE TABLE if not exists financedetails1( 
 			Detail TEXT NOT NULL,
 			Quantity TEXT NOT NULL,
 			PricePerUnit TEXT NOT NULL,
