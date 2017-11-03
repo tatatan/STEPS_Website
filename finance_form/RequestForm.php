@@ -1,5 +1,7 @@
 <?php
 	session_start();
+	// create necessary session value for test
+//	include("fake_session.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -82,14 +84,15 @@
 					$servername = "localhost";
 					$username = "root";
 					$password = "";
-					$db = "step";
+					// $db = "step";
+					$db = "mydb";
 					$conn = new mysqli($servername, $username, $password, $db); 
 
 					if ($conn->connect_error) {
 						die("Connection failed: " . $conn->connect_error);
 					} 
 
-					$select_tel="SELECT tel FROM members WHERE nickname= $_SESSION['nickname']";
+					$select_tel="SELECT tel FROM members WHERE nickname='".$_SESSION['nickname']."'";
 					$phnum=$conn->query($select_tel);
 					//access members table  to select phone number
 
@@ -97,23 +100,22 @@
 							<div class='col-xs-4'>
 								<div class='form-group'>
 									<label for='propo'>ผู้ติดต่อ</label> 
-										<input type='text' name='proposer' class='form-control' placeholder='ชื่อผู้ติดต่อ' id='propo' value=";
-										echo "$_SESSION['nickname'] disabled>"
-					echo		"</div>
+										<input type='text' name='proposer' class='form-control' placeholder='ชื่อผู้ติดต่อ' id='propo' value='".$_SESSION['nickname']."' disabled>
+								</div>
 							</div> 
-							<div class='col-xs-4'>
-								<div class='form-group'>
-									<label for='fd'>ฝ่าย</label>
-										<input type='text' name='field' class='form-control' placeholder='ฝ่ายของคุณ' id='fd' value=";
-										echo "$_SESSION['team_name'] disabled>" 
-					echo		"</div>
+						<div class='col-xs-4'>
+							<div class='form-group'>
+								<label for='fd'>ฝ่าย</label>
+								<input type='text' name='field' class='form-control' placeholder='ฝ่ายของคุณ' id='fd' value='".$_SESSION['team_name']."' disabled>
 							</div>
-							<div class='col-xs-4'>
-								<div class='form-group'>
-									<label for='ph'>เบอร์ติดต่อ</label>
-									<input type='text' name='phoneNumber' class='form-control' placeholder='090-xxx-xxx'id='ph' value=";
-									echo "$phnum disabled>"
-				}else {*/
+						</div>
+						<div class='col-xs-4'>
+							<div class='form-group'>
+								<label for='ph'>เบอร์ติดต่อ</label>
+								<input type='text' name='phoneNumber' class='form-control' placeholder='090-xxx-xxx'id='ph' value='$phnum' disabled>
+							</div>
+						</div>";
+				}else {
 					echo "<div class='row'>
 							<div class='col-xs-4'>
 								<div class='form-group'>
