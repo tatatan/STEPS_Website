@@ -1,5 +1,7 @@
 <?php
 	session_start();
+	// create necessary session value for test
+	//include("fake_session.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,40 +21,14 @@
 			<header><h2>Finance Request Form</h2></header>
 			<p class="text-right"><font size="4"><b>เลขที่ใบเสนอซื้อ:</b></font>
 				<?php 
+
+					// echo empty($_POST['field']) ? 'empty':'no';
+					// echo empty($_POST['project']) ? 'empty':'no';
+					// echo empty($_POST['proposer']) ? 'empty':'no';
+					// echo empty($_POST['phoneNumber']) ? 'empty':'no';
+					// echo empty($_POST['moreDetails']) ? 'empty':'no';
+
 					include("connect.php");
-
-					if(!(empty($_POST['field']) or 
-						empty($_POST['project']) or 
-						empty($_POST['proposer']) or 
-						empty($_POST['phoneNumber']) or
-						empty($_POST['moreDetails'])
-					)){
-
-						if ($conn->connect_error) {
-					    	die("Connection failed: " . $conn->connect_error);
-						} 
-
-						mysql_query("SET NAMES utf8");
-						$cmd = "INSERT INTO FinanceRequests (Field,Proposer,PhoneNumber,Project,Approvement,Status,Comment) 
-										VALUES ('".$_POST['field']."' , '".$_POST['proposer']."', '".$_POST['phoneNumber']."' , 
-										'".$_POST['project']."', 0, 'Waiting', '".$_POST['moreDetails']."')" ;
-
-						if ($conn->query($cmd) === TRUE) {
-					   		echo "<script type='text/javascript'>alert('ส่งแบบฟอร์มแล้ว รอการอนุมัติจากฝ่ายการเงิน');</script>";
-					    }else{
-					    	echo "Error: " . $cmd . "<br>" . $conn->error;
-						}
-
-						for ($int = 0 ; $int < count($_POST['details']); $int++) {
-							$cmd2 = "INSERT INTO FinanceDetails (Detail, Quantity, PricePerUnit, FinanceRequestID)
-									VALUES ('".$_POST['details'][$int]."' , '".$_POST['quantitys'][$int]."', '".$_POST['pricePerUnit'][$int]."', last_insert_id())" ;
-
-
-							if ($conn->query($cmd2) === FALSE) {
-						    	echo "Error: " . $cmd2 . "<br>" . $conn->error;
-							}
-						}
-					}
 
 					$cmd = "SELECT FinanceRequestID FROM FinanceRequests";
 					$result = $conn->query($cmd);
@@ -62,13 +38,12 @@
 				   	}
 				   	else {
 				   		echo $result->num_rows+1;
-				   	} 
-				   		
+				   	}
+					   		
 				   	$conn->close();
-					$_POST = array();
 				?>
 			</p>
-		<form action="" method="post" >
+		<form action="insert_data.php" method="post" >
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="form-group">
@@ -82,38 +57,39 @@
 					$servername = "localhost";
 					$username = "root";
 					$password = "";
-					$db = "step";
+					// $db = "step";
+					$db = "mydb";
 					$conn = new mysqli($servername, $username, $password, $db); 
 
 					if ($conn->connect_error) {
 						die("Connection failed: " . $conn->connect_error);
 					} 
 
-					$select_tel="SELECT tel FROM members WHERE nickname= $_SESSION['nickname']";
+					$select_tel="SELECT tel FROM members WHERE nickname='".$_SESSION['nickname']."'";
 					$phnum=$conn->query($select_tel);
 					//access members table  to select phone number
 
+				//$phnum="090"; test
 					echo "<div class='row'>
 							<div class='col-xs-4'>
 								<div class='form-group'>
 									<label for='propo'>ผู้ติดต่อ</label> 
-										<input type='text' name='proposer' class='form-control' placeholder='ชื่อผู้ติดต่อ' id='propo' value=";
-										echo "$_SESSION['nickname'] disabled>"
-					echo		"</div>
+										<input type='text' name='proposer' class='form-control' placeholder='ชื่อผู้ติดต่อ' id='propo' value='".$_SESSION['nickname']."' readonly>
+								</div>
 							</div> 
-							<div class='col-xs-4'>
-								<div class='form-group'>
-									<label for='fd'>ฝ่าย</label>
-										<input type='text' name='field' class='form-control' placeholder='ฝ่ายของคุณ' id='fd' value=";
-										echo "$_SESSION['team_name'] disabled>" 
-					echo		"</div>
+						<div class='col-xs-4'>
+							<div class='form-group'>
+								<label for='fd'>ฝ่าย</label>
+								<input type='text' name='field' class='form-control' placeholder='ฝ่ายของคุณ' id='fd' value='".$_SESSION['team_name']."' readonly>
 							</div>
-							<div class='col-xs-4'>
-								<div class='form-group'>
-									<label for='ph'>เบอร์ติดต่อ</label>
-									<input type='text' name='phoneNumber' class='form-control' placeholder='090-xxx-xxx'id='ph' value=";
-									echo "$phnum disabled>"
-				}else {*/
+						</div>
+						<div class='col-xs-4'>
+							<div class='form-group'>
+								<label for='ph'>เบอร์ติดต่อ</label>
+								<input type='text' name='phoneNumber' class='form-control' placeholder='090-xxx-xxx'id='ph' value='".$phnum."' readonly>
+							</div>
+						</div>";
+				}else {
 					echo "<div class='row'>
 							<div class='col-xs-4'>
 								<div class='form-group'>
