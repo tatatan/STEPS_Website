@@ -31,52 +31,52 @@ include 'navbar.php';
 
       $student_id = $_POST['student_id'];
       $_SESSION['student_id'] = $student_id;
-      $query = "SELECT studentid, nickname,nameeng, team, email, fbid FROM members WHERE studentid=$student_id;";
+      $query = "SELECT * FROM Members WHERE StudentID=$student_id;";
       $result = $connect->query($query);
 
       $my_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
       urlencode($my_url);
 
       if ($result != NULL){
-      $row = $result->fetch_assoc();
-      
-      $nameeng = $row['nameeng'];
-      $nickname = $row['nickname'];
-      $team_id = $row['team'];
-      $email = $row['email'];
+        $row = $result->fetch_assoc();
 
-      $query_team = "SELECT name FROM team WHERE team_id=$team_id;";
-      $result_team = $connect->query($query_team);
-      $row_team = $result_team->fetch_assoc();
+        $nameEng = $row['NameEng'];
+        $nickname = $row['Nickname'];
+        $teamID = $row['Team'];
+        $email = $row['Email'];
 
-      if($row['studentid'] != NULL) {
-        echo "<div class=\"container\"> 
+        if($row['StudentID'] != NULL) {
+            $query_team = "SELECT TeamName FROM Teams WHERE teamID=$teamID;";
+            $result_team = $connect->query($query_team);
+            $rowTeam = $result_team->fetch_assoc();
+
+            echo "<div class=\"container\"> 
                 <p></p>
                 <p></p>
                 <TABLE> 
                 <TR>
-                <TD> student ID </TD><TD> :  ".$row['studentid']." <TD></TR>
+                <TD> student ID </TD><TD> :  ".$row['StudentID']." <TD></TR>
                 <TR>
-                <TD> name  </TD><TD> :  ". $nameeng."<TD></TR>
+                <TD> name  </TD><TD> :  ". $nameEng."<TD></TR>
                 <TR>
                 <TD> nickname </TD><TD> :  ".$nickname." <TD></TR>
                 <TR>
-                <TD> team  </TD><TD>:  ". $row_team['name']." <TD></TR>
+                <TD> team  </TD><TD>:  ". $rowTeam['TeamName']." <TD></TR>
                 <TR>
                 <TD> email  </TD><TD>:  ". $email."<TD></TR></TABLE>";
 
-                if (($row['fbid'] !='') or ($row['fbid']!= NULL)   ){
+                if (($row['FacebookID'] !='') or ($row['FacebookID']!= NULL)   ){
                    echo " <p></p> <p class=\"text-muted\"> This member has already registered </p>";    
-                }
+                    }
                 else{
-                 echo "
-                <p></p>
-                <a href=\"https://www.facebook.com/dialog/oauth?client_id=504893919875225&redirect_uri=".$my_url."&scope=email\" class=\"btn btn-info my-2 my-sm-0\">
+                    echo "
+                    <p></p>
+                    <a href=\"https://www.facebook.com/dialog/oauth?client_id=504893919875225&redirect_uri=".$my_url."&scope=email\" class=\"btn btn-info my-2 my-sm-0\">
                     Register via facebook
-                </a>
-                </div>";    
+                    </a>
+                    </div>";    
                 }}
-      else{
+else{
         echo "<div class=\"container\">
               <p></p>
               <p class=\"text-warning\"> Your student id are not in our database, please contact the admin </p>
@@ -104,14 +104,14 @@ include 'navbar.php';
             . "&scope=email";
 
 
-        $response = file_get_contents($token_url);
+        $response = json_decode(file_get_contents($token_url));
         
-        $params = null;
-        parse_str($response,$params);
+        //$params = null;
+        //parse_str($response,$params);
         //$_SESSION['response'] = @file_get_contents($token_url);
         if($response!=null){
             //echo "<br><br>" . $token_url;
-            $graph_url = "https://graph.facebook.com/me?fields=id,name,email&access_token=" . $params['access_token'];
+            $graph_url = "https://graph.facebook.com/me?fields=id,name,email&access_token=" . $response->access_token;
             $user = json_decode(file_get_contents($graph_url));
             //$_SESSION['graph'] = file_get_contents($graph_url);
             //echo "<br><br>" . $graph_url;
@@ -121,21 +121,22 @@ include 'navbar.php';
             $facebook_id = $user->id;
             $student_id = $_SESSION['student_id'];
 
+            echo $fbname;
+            echo $fbemail;
 
-            $conn = new mysqli("localhost", "root", "", "step");
-            $query = "SELECT email, password, nickname, fbid, team, studentid FROM members
-                    WHERE studentid ='" . $student_id . "';";
+            $query = "SELECT * FROM Members
+                    WHERE StudentID ='" . $student_id . "';";
             session_unset(); 
-            $query_result = $conn->query($query);
-            $fb_row=$query_result->fetch_assoc();
+            $query_result = $connect->query($query);
+            $fbRow=$query_result->fetch_assoc();
 
-            $sql = "UPDATE members SET fbid = '$facebook_id' WHERE studentid =  $student_id ;";
-            if ($conn->query($sql) === TRUE) {
-              
-                $_SESSION['nickname'] = $row['nickname'];
-                $_SESSION['email'] = $row['email'];
-                $_SESSION['facebook_id'] = $row['fbid'];
-                $_SESSION['team'] = $row['team'];
+            $sql = "UPDATE Members SET FacebookID = '$facebook_id' WHERE StudentID =  $student_id ;";
+            if ($connect->query($sql) === TRUE) {
+                
+                $_SESSION['nickname'] = $fbRow['Nickname'];
+                $_SESSION['email'] = $fbRow['Email'];
+                $_SESSION['facebook_id'] = $fbRow['FacebookID'];
+                $_SESSION['team'] = $fbRow['Team'];
                 echo "<div class=\"container\"
                 <p></p><p class=\"text-primary\"> Register successfully </p>";
                 echo "<p></p>
@@ -143,7 +144,7 @@ include 'navbar.php';
           Go to mainpage
         </a>";
           } else {
-                echo "Error updating record: " . $conn->error;
+                echo "Error updating record: " . $connect->error;
             }
  
 

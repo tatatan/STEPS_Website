@@ -10,7 +10,7 @@ include ('connect.php');
 
     if(isset($_GET['id'])){
     $studentid = $_GET['id'];
-    $query = sprintf("SELECT studentid, nickname, nameeng, major,team, email, facebook,tel FROM members WHERE studentid=$studentid");
+    $query = sprintf("SELECT * FROM members WHERE studentid=$studentid");
     $result = $connect->query($query);
 
 
@@ -20,23 +20,23 @@ include ('connect.php');
 
         
         while ($row = $result->fetch_assoc()){
-            $studentid = $row['studentid'];
-            $nickname = $row['nickname'];
-            $nameeng = $row['nameeng']; 
-            $team_id = $row['team'];
-            $email = $row['email'];
-            $facebook = $row['facebook'];
-            $tel = $row['tel'];
-            $major = $row['major'];
+            $studentid = $row['StudentID'];
+            $nickname = $row['Nickname'];
+            $nameeng = $row['NameEng']; 
+            $team_id = $row['Team'];
+            $email = $row['Email'];
+            $facebook = $row['Facebook'];
+            $tel = $row['Tel'];
+            $faculty = $row['Faculty'];
 
            //check team name :: hey why don't everyone fix their team name LOL 
-            $query_team = "SELECT name FROM team WHERE team_id=$team_id;";
+            $query_team = "SELECT * FROM Teams WHERE TeamID=$team_id;";
             $result_team = $connect->query($query_team);
             $row_team = $result_team->fetch_assoc();
             $team = "";
             
             if ($result_team!=NULL){
-                $team = $row_team['name'];
+                $team = $row_team['TeamName'];
             }
 
             echo "<h4 class='text-primary'> $nameeng </h4>
@@ -46,7 +46,7 @@ include ('connect.php');
             <TR><TD> Student id</TD><TD>:  $studentid</TD></TR>
             <TR><TD> Nickname</TD><TD>:  $nickname</TD></TR>
             <TR><TD> Name </TD><TD>:  $nameeng</TD></TR>
-            <TR><TD> Major </TD><TD>: $major </TD></TR>
+            <TR><TD> Major </TD><TD>: $faculty </TD></TR>
             <TR><TD> Team </TD><TD>:  $team</TD></TR></TABLE>
             <br />
             <h5 class='text-primary'> Contact </h5>
