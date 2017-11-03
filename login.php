@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php 
-
-    include ('navbar.php');
+    session_start();
     include 'connect.php';
     $fbid = null;
     $my_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -39,11 +38,10 @@
 
 
             $conn  = new mysqli("localhost", "root", "", "step");
-            $query = sprintf("SELECT email, password, nickname, fbid, team ,studentid, nameeng, tel FROM members
+            $query = sprintf("SELECT email, password, nickname, fbid, team,studentid, nameeng FROM members
                     WHERE fbid = $facebook_id ");
             echo $query;
 
-            
             $result = mysqli_query($conn,$query);
             
 
@@ -54,20 +52,13 @@
             else{
 
                 $row=$result->fetch_assoc();
-                
-                $team_id = $row['team'] ;
-                $query_team = sprintf("SELECT team_id,name FROM team WHERE team_id = $team_id");
-                $result_team = $connect->query($query_team);
-                $row_team=$result_team->fetch_assoc();
-                
+                // echo $row['Email'];
                 $_SESSION['nickname'] = $row['nickname'];
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['facebook_id'] = $row['fbid'];
-                $_SESSION['team_id'] = $row['team'];
-                $_SESSION['team_name'] = $row_team['name'];
+                $_SESSION['team'] = $row['team'];
                 $_SESSION['student_id'] = $row['studentid'];
                 $_SESSION['nameeng'] = $row['nameeng'];
-                $_SESSION['tel'] = $row['tel'];
                 header('Location: index.php');
             }
 
@@ -75,7 +66,46 @@
     }}
 
 ?>
-<html>
+<html lang"en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title> STEPS ! login </title>
+    </head>
+<nav class="navbar ">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="#">Steps</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Page 1</a></li>
+        <li><a href="#">Page 2</a></li> 
+        <li><a href="#">Page 3</a></li> 
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <?php
+      if((isset($_SESSION['fbid']))and(isset($_SESSION['nickname']))){
+          echo " <li><a href=\"member.php\"><span class=\"glyphicon glyphicon-user\"></span>".$_SESSION['nickname']."</a></li>
+        <li><a href=\"logout.php\"><span class=\"glyphicon glyphicon-log-in\"></span> Logout</a></li>";
+      }
+      else{
+        echo "<li><a href=\"regis.php\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>
+        <li><a href=\"login.php\"><span class=\"glyphicon glyphicon-log-out\"></span> Login</a></li>";
+      } ?>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <div class="container">
     <h4 class="text-primary"> Login  </h4>
