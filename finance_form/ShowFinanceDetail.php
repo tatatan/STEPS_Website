@@ -15,9 +15,9 @@
 	</head>
 	<body>
 		<div class="container">
-			
-			<?php 
-			//get session from login page 
+
+			<?php
+			//get session from login page
 			if ($_SESSION['team_id'] == 5){
 				include("connect.php");
 				echo "<div class='page-header'>
@@ -25,13 +25,13 @@
   				echo "".$_GET['id']."</h1></div>";
 				if(!empty($_POST['changeApp'])){
 					$change_cmd = "UPDATE financerequests SET Approvement=1 WHERE FinanceRequestID='".$_GET['id']."'";
-					$conn->query($change_cmd); 
+					$conn->query($change_cmd);
 				}
 
 				if(!empty($_POST['changeStat'])){
 					$changest=$_POST['changeStat'];
 					$change_cmd2 = "UPDATE financerequests SET Status='".$changest."' WHERE FinanceRequestID='".$_GET['id']."'";
-					$conn->query($change_cmd2); 
+					$conn->query($change_cmd2);
 				}
 
 				$show_info = "SELECT * FROM financedetails WHERE FinanceRequestID='".$_GET['id']."'";
@@ -55,7 +55,7 @@
 				    echo "0 results";
 				}
 
-				$show_info2 = "SELECT Proposer,Field,PhoneNumber,Approvement,Status,Comment 
+				$show_info2 = "SELECT Proposer,Field,PhoneNumber,Approvement,Status,Comment
 								FROM financerequests WHERE FinanceRequestID='".$_GET['id']."'";
 				$result2 = $conn->query($show_info2);
 				$row2 = $result2->fetch_assoc();
@@ -66,7 +66,7 @@
 				$status = $row2["Status"];
 				$comm = $row2["Comment"];
 				echo "<label><font size='3'>เพิ่มเติม</font></label><div class='well'><b>นำไปใช้เพื่อ</b>:$comm<br><b>ผู้ติดต่อ: </b>$prop ($field) <b>เบอร์ติดต่อ:</b>$phonenum<br><br>
-						
+
 						<b>การอนุมัติ:</b>$approv";
 				if($approv == "รอการอนุมัติ"){
 					echo "<form action='' method='post'><input name='changeApp' type='submit' value='เปลี่ยนเป็นอนุมัติแล้ว' class='btn btn-primary btn-sm'> </form>";
@@ -74,7 +74,7 @@
 				echo "<b>สถานะ:</b> $status <form action='' method='post'><input name='changeStat' type='text' placeholder='กรอกข้อความแก้ไขสถานะ'><input type='submit' value='ส่ง' class='btn btn-sm'></form>";
 				echo "</div>";
 				$conn->close();
-			}else{echo ("ไม่ใช่ฝ่ายการเงินห้ามดูน้าา")
+			}else{echo ("ไม่ใช่ฝ่ายการเงินห้ามดูน้าา");
 				}
 		?>
   		<p class="text-right"><button class='btn'><a href="ShowFinanceData.php">Back to previous page</a></button></p>

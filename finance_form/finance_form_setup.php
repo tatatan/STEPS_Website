@@ -9,7 +9,7 @@
 			Status TEXT NOT NULL,
 			Comment TEXT NOT NULL
 			)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-	$cmd2="CREATE TABLE if not exists financedetails1(
+	$cmd2="CREATE TABLE if not exists financedetails(
 			Detail TEXT NOT NULL,
 			Quantity TEXT NOT NULL,
 			PricePerUnit TEXT NOT NULL,

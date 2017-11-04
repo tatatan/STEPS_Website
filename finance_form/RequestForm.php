@@ -20,7 +20,7 @@
 		<div class="container">
 			<header><h2>Finance Request Form</h2></header>
 			<p class="text-right"><font size="4"><b>เลขที่ใบเสนอซื้อ:</b></font>
-				<?php 
+				<?php
 
 					// echo empty($_POST['field']) ? 'empty':'no';
 					// echo empty($_POST['project']) ? 'empty':'no';
@@ -39,7 +39,7 @@
 				   	else {
 				   		echo $result->num_rows+1;
 				   	}
-					   		
+
 				   	$conn->close();
 				?>
 			</p>
@@ -52,31 +52,30 @@
 					</div>
 				</div>
 			</div>
-			<?php 
+			<?php
 				if (!empty($_SESSION['nickname'])){
 					$servername = "localhost";
 					$username = "root";
 					$password = "";
 					// $db = "step";
 					$db = "mydb";
-					$conn = new mysqli($servername, $username, $password, $db); 
+					$conn = new mysqli($servername, $username, $password, $db);
 
 					if ($conn->connect_error) {
 						die("Connection failed: " . $conn->connect_error);
-					} 
+					}
 
-					$select_tel="SELECT tel FROM members WHERE nickname='".$_SESSION['nickname']."'";
-					$phnum=$conn->query($select_tel);
+					$phnum=$_SESSION['tel'];
 					//access members table  to select phone number
 
 				//$phnum="090"; test
 					echo "<div class='row'>
 							<div class='col-xs-4'>
 								<div class='form-group'>
-									<label for='propo'>ผู้ติดต่อ</label> 
+									<label for='propo'>ผู้ติดต่อ</label>
 										<input type='text' name='proposer' class='form-control' placeholder='ชื่อผู้ติดต่อ' id='propo' value='".$_SESSION['nickname']."' readonly>
 								</div>
-							</div> 
+							</div>
 						<div class='col-xs-4'>
 							<div class='form-group'>
 								<label for='fd'>ฝ่าย</label>
@@ -93,7 +92,7 @@
 					echo "<div class='row'>
 							<div class='col-xs-4'>
 								<div class='form-group'>
-									<label for='propo'>ผู้ติดต่อ</label> 
+									<label for='propo'>ผู้ติดต่อ</label>
 										<input type='text' name='proposer' class='form-control' placeholder='ชื่อผู้ติดต่อ' id='propo'>
 								</div>
 							</div>
@@ -109,11 +108,11 @@
 								<input type='text' name='phoneNumber' class='form-control' placeholder='090-xxx-xxx'id='ph'>
 								</div>
 							</div>
-						</div>"; 
+						</div>";
 				}
-				
-			?>		
-			
+
+			?>
+
 			<br>
 			<div class="row">
 				<div class="col-xs-12">
@@ -137,7 +136,7 @@
 						<div class="col-xs-1"><center><label>1</label></center></div>
 						<div class="col-xs-4"><div class="form-group"><input name="details[]" type="text" placeholder="รายละเอียด" class="form-control"></div></div>
 						<div class="col-xs-4"><div class="form-group"><input name="quantitys[]"  type="text" placeholder="จำนวน" class="form-control quantity"></div></div>
-						<div class="col-xs-3"><div class="form-group"><input name="pricePerUnit[]"  type="text" placeholder="ราคาต่อหน่วย" class="form-control price"></div></div>	
+						<div class="col-xs-3"><div class="form-group"><input name="pricePerUnit[]"  type="text" placeholder="ราคาต่อหน่วย" class="form-control price"></div></div>
 					</div>
 				</div>
 			</div>
@@ -145,7 +144,7 @@
 			<p class="text-right"><font size="4"><b>ราคารวม: </b></font><label name ="totalprice" id='total'>0</label><br>
 			<button id="add" class="btn btn-success btn-sm">เพิ่มรายการ</button>
 			<button id="remove" class="btn btn-danger btn-sm">ลบรายการล่าสุด</button></p>
-			
+
 
 			<script>
 				$(document).ready(function() {
@@ -175,7 +174,7 @@
 							$.fn.totalPrice(1234);
 						}
 					});
-					
+
 					$('#warpper').keyup($.fn.totalPrice);
 				});
 			</script>
@@ -192,4 +191,3 @@
 
 	</body>
 </html>
-
