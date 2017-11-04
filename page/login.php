@@ -33,18 +33,18 @@
 
             $name = $user->name;
             $email = $user->email;
-            $facebook_id = $user->id;
+            $facebookID = $user->id;
 
-            echo $name; echo $email; echo $facebook_id;
+            echo $name; echo $email; echo $facebookID;
 
 
-            $conn  = new mysqli("localhost", "root", "", "step");
-            $query = sprintf("SELECT email, password, nickname, fbid, team ,studentid, nameeng, tel FROM members
-                    WHERE fbid = $facebook_id ");
+            
+            $query = sprintf("SELECT * FROM members
+                    WHERE facebookID = $facebookID ");
             echo $query;
 
             
-            $result = mysqli_query($conn,$query);
+            $result = mysqli_query($connect,$query);
             
 
             if(mysqli_num_rows($result) != 1){
@@ -55,19 +55,19 @@
 
                 $row=$result->fetch_assoc();
                 
-                $team_id = $row['team'] ;
-                $query_team = sprintf("SELECT team_id,name FROM team WHERE team_id = $team_id");
-                $result_team = $connect->query($query_team);
-                $row_team=$result_team->fetch_assoc();
+                $teamID = $row['Team'] ;
+                $queryTeam = sprintf("SELECT TeamID,TeamName FROM Teams WHERE TeamID = $teamID");
+                $resultTeam = $connect->query($queryTeam);
+                $rowTeam=$resultTeam->fetch_assoc();
                 
-                $_SESSION['nickname'] = $row['nickname'];
-                $_SESSION['email'] = $row['email'];
-                $_SESSION['facebook_id'] = $row['fbid'];
-                $_SESSION['team_id'] = $row['team'];
-                $_SESSION['team_name'] = $row_team['name'];
-                $_SESSION['student_id'] = $row['studentid'];
-                $_SESSION['nameeng'] = $row['nameeng'];
-                $_SESSION['tel'] = $row['tel'];
+                $_SESSION['nickname'] = $row['Nickname'];
+                $_SESSION['email'] = $row['Email'];
+                $_SESSION['facebook_id'] = $row['FacebookID'];
+                $_SESSION['team_id'] = $row['Team'];
+                $_SESSION['team_name'] = $rowTeam['TeamName'];
+                $_SESSION['student_id'] = $row['StudentID'];
+                $_SESSION['nameeng'] = $row['NameEng'];
+                $_SESSION['tel'] = $row['Tel'];
                 header('Location: index.php');
             }
 
