@@ -6,7 +6,7 @@ $query = "CREATE TABLE Teams(TeamID INT(4) NOT NULL, TeamName VARCHAR(40) NOT NU
 $query2= "CREATE TABLE Members(MemberID INT(6) NOT NULL AUTO_INCREMENT,
 Email VARCHAR(100) NOT NULL,
 Password VARCHAR(50) NOT NULL,
-Team int(5) NOT NULL,
+TeamID int(5) NOT NULL,
 Gender int(2) NOT NULL,
 NameThai VARCHAR(50) NOT NULL,
 NameEng VARCHAR(50) NOT NULL,
@@ -27,6 +27,7 @@ ActivityOutsideSteps VARCHAR(100) NOT NULL,
 ColorPrefer VARCHAR(50) NOT NULL,
 Interest VARCHAR(100) NOT NULL,
 KnowingStepsFrom VARCHAR(100) NOT NULL,
+ProfilePicture VARCHAR(1000) NOT NULL,
 PRIMARY KEY (MemberID) )";
 
  mysqli_query($connect,$query);
