@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	include "navbar.php";
 	// create necessary session value for test
 	//include("fake_session.php");
 ?>
@@ -31,7 +31,7 @@
 					include("connect.php");
 
 					$cmd = "SELECT FinanceRequestID FROM FinanceRequests";
-					$result = $conn->query($cmd);
+					$result = $connect->query($cmd);
 
 					if ($result->num_rows == 0) {
 				   		echo "1";
@@ -40,7 +40,7 @@
 				   		echo $result->num_rows+1;
 				   	}
 
-				   	$conn->close();
+				   	$connect->close();
 				?>
 			</p>
 		<form action="insert_data.php" method="post" >
@@ -59,10 +59,10 @@
 					$password = "";
 					// $db = "step";
 					$db = "mydb";
-					$conn = new mysqli($servername, $username, $password, $db);
+					$connect = new mysqli($servername, $username, $password, $db);
 
-					if ($conn->connect_error) {
-						die("Connection failed: " . $conn->connect_error);
+					if ($connect->connect_error) {
+						die("Connection failed: " . $connect->connect_error);
 					}
 
 					$phnum=$_SESSION['tel'];
@@ -126,9 +126,6 @@
 				<div class="col-xs-4"><font size="3"><center><b>จำนวน</b></center></div>
 				<div class="col-xs-3"><font size="3"><center><b>ราคาต่อหน่วย(บาท)</b></center></div>
 			</div>
-
-
-			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
 			<div id="warpper">
 				<div id="1">

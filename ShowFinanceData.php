@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	include "navbar.php";
 ?>
 <!DOCTYPE = html>
 <html>
@@ -22,14 +22,14 @@
 
 			}
 		</script>
-		
-			<?php 
-				//รับSessionฝ่ายจาก login 
+
+			<?php
+				//รับSessionฝ่ายจาก login
 				if ($_SESSION['team_id'] == 5){
 					include("connect.php");
 
 					$show_info = "SELECT * FROM financerequests";
-					$result = $conn->query($show_info);
+					$result = $connect->query($show_info);
 
 					echo '<div class="container">';
 					if ($result->num_rows > 0) {
@@ -51,7 +51,7 @@
 					    echo "0 results";
 					}
 					echo "</div>";
-					$conn->close();
+					$connect->close();
 				}
 			?>
 		<p class="text-right"><button class='btn btn'><a href="RequestForm.php">กลับไปหน้าฟอร์ม</a></button></p>

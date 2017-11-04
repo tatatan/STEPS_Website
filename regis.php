@@ -42,11 +42,11 @@ include 'navbar.php';
 
         $nameEng = $row['NameEng'];
         $nickname = $row['Nickname'];
-        $teamID = $row['Team'];
+        $teamID = $row['TeamID'];
         $email = $row['Email'];
 
         if($row['StudentID'] != NULL) {
-            $query_team = "SELECT TeamName FROM Teams WHERE teamID=$teamID;";
+            $query_team = "SELECT TeamName FROM Teams WHERE TeamID=$teamID;";
             $result_team = $connect->query($query_team);
             $rowTeam = $result_team->fetch_assoc();
 
@@ -121,9 +121,6 @@ else{
             $facebook_id = $user->id;
             $student_id = $_SESSION['student_id'];
 
-            echo $fbname;
-            echo $fbemail;
-
             $query = "SELECT * FROM Members
                     WHERE StudentID ='" . $student_id . "';";
             session_unset();
@@ -136,7 +133,7 @@ else{
                 $_SESSION['nickname'] = $fbRow['Nickname'];
                 $_SESSION['email'] = $fbRow['Email'];
                 $_SESSION['facebook_id'] = $fbRow['FacebookID'];
-                $_SESSION['team'] = $fbRow['Team'];
+                $_SESSION['team'] = $fbRow['TeamID'];
                 echo "<div class=\"container\"
                 <p></p><p class=\"text-primary\"> Register successfully </p>";
                 echo "<p></p>

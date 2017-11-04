@@ -18,7 +18,7 @@
 		)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 	include("connect.php");
-	mysqli_query($conn,$cmd);
- 	mysqli_query($conn,$cmd2);
- 	$conn->close();
+	mysqli_query($connect,$cmd);
+ 	mysqli_query($connect,$cmd2);
+ 	$connect->close();
 ?>
