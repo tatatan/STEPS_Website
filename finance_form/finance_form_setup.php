@@ -1,5 +1,5 @@
 <?php
-	$cmd="CREATE TABLE if not exists financerequests1( 
+	$cmd="CREATE TABLE if not exists financerequests(
 			FinanceRequestID INT AUTO_INCREMENT PRIMARY KEY,
 			Field TEXT NOT NULL,
 			Proposer TEXT NOT NULL,
@@ -8,17 +8,17 @@
 			Approvement BOOLEAN NOT NULL,
 			Status TEXT NOT NULL,
 			Comment TEXT NOT NULL
-			)";
-	$cmd2="CREATE TABLE if not exists financedetails1( 
+			)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+	$cmd2="CREATE TABLE if not exists financedetails1(
 			Detail TEXT NOT NULL,
 			Quantity TEXT NOT NULL,
 			PricePerUnit TEXT NOT NULL,
 			FinanceRequestID INT,
 			FOREIGN KEY (FinanceRequestID) REFERENCES financerequests(FinanceRequestID)
-		)";
+		)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
 	include("connect.php");
 	mysqli_query($conn,$cmd);
  	mysqli_query($conn,$cmd2);
- 	$conn->close();		
+ 	$conn->close();
 ?>

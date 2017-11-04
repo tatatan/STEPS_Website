@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php 
+<?php
 session_start();
 ?>
 <html lang"en">
@@ -17,7 +17,7 @@ session_start();
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        <span class="icon-bar"></span> 
+        <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">Steps</a>
     </div>
@@ -25,8 +25,8 @@ session_start();
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#">Page 1</a></li>
-        <li><a href="#">Page 2</a></li> 
-        <li><a href="#">Page 3</a></li> 
+        <li><a href="#">Page 2</a></li>
+        <li><a href="#">Page 3</a></li>
 
         <!-- link for only-member page /-->
          <?php
@@ -39,7 +39,7 @@ session_start();
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <?php
-      if((isset($_SESSION['facebook_id']))and(isset($_SESSION['nickname']))){          
+      if((isset($_SESSION['facebook_id']))and(isset($_SESSION['nickname']))){
           echo " <li><a href=\"member.php\"><span class=\"glyphicon glyphicon-user\"></span>".$_SESSION['nickname']."    </a></li>
         <li><a href=\"logout.php\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a></li>";
       }
@@ -55,7 +55,7 @@ session_start();
 <div class="container">
   <h4 class="text-primary"> Register to STEPS website </h4>
   <p class="text-muted"> You should be STEPS staff to register </p>
-    <form method = "post" action="regis.php"> 
+    <form method = "post" action="regis.php">
       <div class="input-group col-xs-6 col-s-4 col-m-4">
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
             <input id="student_id" type="text" class="form-control" name="student_id" placeholder="Student ID">
@@ -77,7 +77,7 @@ session_start();
 
       $student_id = $_POST['student_id'];
       $_SESSION['student_id'] = $student_id;
-      $query = "SELECT studentid, nickname,nameeng, team, email, fbid FROM members WHERE studentid=$student_id;";
+      $query = "SELECT * FROM members WHERE StudentID=$student_id;";
       $result = $connect->query($query);
 
       $my_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -85,34 +85,33 @@ session_start();
 
       if ($result != NULL){
       $row = $result->fetch_assoc();
-      
-      $nameeng = $row['nameeng'];
-      $nickname = $row['nickname'];
-      $team_id = $row['team'];
-      $email = $row['email'];
 
-      $query_team = "SELECT name FROM team WHERE team_id=$team_id;";
+      $nameeng = $row['NameEng'];
+      $nickname = $row['Nickname'];
+      $team_id = $row['TeamID'];
+      $email = $row['Email'];
+
+      $query_team = "SELECT TeamName FROM Teams WHERE TeamID=$team_id;";
       $result_team = $connect->query($query_team);
       $row_team = $result_team->fetch_assoc();
-
-      if($row['studentid'] != NULL) {
-        echo "<div class=\"container\"> 
+      if($row['StudentID'] != NULL) {
+        echo "<div class=\"container\">
                 <p></p>
                 <p></p>
-                <TABLE> 
+                <TABLE>
                 <TR>
-                <TD> student ID </TD><TD> :  ".$row['studentid']." <TD></TR>
+                <TD> student ID </TD><TD> :  ".$row['StudentID']." <TD></TR>
                 <TR>
                 <TD> name  </TD><TD> :  ". $nameeng."<TD></TR>
                 <TR>
                 <TD> nickname </TD><TD> :  ".$nickname." <TD></TR>
                 <TR>
-                <TD> team  </TD><TD>:  ". $row_team['name']." <TD></TR>
+                <TD> team  </TD><TD>:  ". $row_team['TeamName']." <TD></TR>
                 <TR>
                 <TD> email  </TD><TD>:  ". $email."<TD></TR></TABLE>";
 
-                if (($row['fbid'] !='') or ($row['fbid']!= NULL)   ){
-                   echo " <p></p> <p class=\"text-muted\"> This member has already registered </p>";    
+                if (($row['FacebookID'] !='') or ($row['FacebookID']!= NULL)   ){
+                   echo " <p></p> <p class=\"text-muted\"> This member has already registered </p>";
                 }
                 else{
                  echo "
@@ -120,7 +119,7 @@ session_start();
                 <a href=\"https://www.facebook.com/dialog/oauth?client_id=504893919875225&redirect_uri=".$my_url."&scope=email\" class=\"btn btn-info my-2 my-sm-0\">
                     Register via facebook
                 </a>
-                </div>";    
+                </div>";
                 }}
       else{
         echo "<div class=\"container\">
@@ -149,9 +148,9 @@ session_start();
             . "&client_secret=" . $app_secret . "&code=" . $code
             . "&scope=email";
 
-
+        echo($token_url);
         $response = file_get_contents($token_url);
-        
+
         $params = null;
         parse_str($response,$params);
         //$_SESSION['response'] = @file_get_contents($token_url);
@@ -168,20 +167,20 @@ session_start();
             $student_id = $_SESSION['student_id'];
 
 
-            $conn = new mysqli("localhost", "root", "", "step");
-            $query = "SELECT email, password, nickname, fbid, team, studentid FROM members
-                    WHERE studentid ='" . $student_id . "';";
-            session_unset(); 
+            $conn = new mysqli("localhost", "root", "", "steps");
+            $query = "SELECT * FROM members
+                    WHERE StudentID ='" . $student_id . "';";
+            session_unset();
             $query_result = $conn->query($query);
             $fb_row=$query_result->fetch_assoc();
 
-            $sql = "UPDATE members SET fbid = '$facebook_id' WHERE studentid =  $student_id ;";
+            $sql = "UPDATE Members SET FacebookID = '$facebook_id' WHERE StudentID =  $student_id ;";
             if ($conn->query($sql) === TRUE) {
-              
-                $_SESSION['nickname'] = $row['nickname'];
-                $_SESSION['email'] = $row['email'];
-                $_SESSION['facebook_id'] = $row['fbid'];
-                $_SESSION['team'] = $row['team'];
+
+                $_SESSION['nickname'] = $row['Nickname'];
+                $_SESSION['email'] = $row['Email'];
+                $_SESSION['facebook_id'] = $row['FacebookID'];
+                $_SESSION['team'] = $row['TeamID'];
                 echo "<div class=\"container\"
                 <p></p><p class=\"text-primary\"> Register successfully </p>";
                 echo "<p></p>
@@ -191,14 +190,14 @@ session_start();
           } else {
                 echo "Error updating record: " . $conn->error;
             }
- 
 
 
-            
+
+
         }
-           
 
-        
+
+
     }
 
     /* $fbid = null;
@@ -216,15 +215,15 @@ session_start();
             . "&client_secret=" . $app_secret . "&code=" . $code
             . "&scope=email";
         echo $token_url;
-        
+
         $response = @file_get_contents($token_url);
-        
+
         $params = null;
         parse_str($response,$params);
         echo $params['access_token'];
         $_SESSION['response'] = @file_get_contents($token_url);
 
-       
+
             //echo "<br><br>" . $token_url;
         $graph_url = "https://graph.facebook.com/me?fields=id,name,email&access_token=" . $params['access_token'];
         $user = json_decode(file_get_contents($graph_url));
@@ -240,7 +239,7 @@ session_start();
             $query = "UPDATE members SET fbid = ".$facebook_id."WHERE studentid=".$_SESSION['student_id'];
             $query_result = $conn->query($query);}*/
 
-  
+
 
   ?>
 
