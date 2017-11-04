@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php 
+<?php
     session_start();
     include 'connect.php';
     $fbid = null;
@@ -10,7 +10,7 @@
         $code = $_GET['code'];
         //echo "code=" . $code;
         $app_id = "504893919875225";
-        $app_secret = "f05c08e4317152d98a1a59d4cc32ddbe";
+        $app_secret = "71359ff0b37716abe9c02c8130d20898";
 
         $token_url = "https://graph.facebook.com/oauth/access_token?"
             . "client_id=" . $app_id . "&redirect_uri=" . urlencode($my_url)
@@ -19,7 +19,7 @@
 
 
         $response =  json_decode(file_get_contents($token_url));
-        
+
         //$params = null;
         //parse_str($response,$params);
         //$_SESSION['response'] = @file_get_contents($token_url);
@@ -43,7 +43,7 @@
             echo $query;
 
             $result = mysqli_query($conn,$query);
-            
+
 
             if(mysqli_num_rows($result) != 1){
                 $_SESSION['error']="You are not in our system, Please Register first.";
@@ -62,7 +62,7 @@
                 header('Location: index.php');
             }
 
-        
+
     }}
 
 ?>
@@ -81,7 +81,7 @@
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        <span class="icon-bar"></span> 
+        <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">Steps</a>
     </div>
@@ -89,8 +89,8 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#">Page 1</a></li>
-        <li><a href="#">Page 2</a></li> 
-        <li><a href="#">Page 3</a></li> 
+        <li><a href="#">Page 2</a></li>
+        <li><a href="#">Page 3</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <?php
@@ -111,13 +111,13 @@
     <h4 class="text-primary"> Login  </h4>
     <p class="text-muted"> to access only-member information </p>
     <?php if(isset($_GET['error_code'])){
-          echo "<p class=\"text-warning\"> some error occured please try again </p>";} 
+          echo "<p class=\"text-warning\"> some error occured please try again </p>";}
     ?>
     <?php if (isset($_SESSION['error'])){
         echo "<p class=\"text-warning\">".$_SESSION['error']."</p>";
         unset($_SESSION['error']);} ?>
 
-    <form method = "post" action="login_process.php" > 
+    <form method = "post" action="login_process.php" >
       <div class="input-group pull-left col-xs-7">
           <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
           <input id="email" type="text" class="form-control" name="email" placeholder="Email">
@@ -131,7 +131,7 @@
               </button>
           </div>
       </div>
-    </form> 
+    </form>
   </div>
   <div class="container">
       <p></p>

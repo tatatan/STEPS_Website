@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php 
+<?php
 include 'navbar.php';
 ?>
 
@@ -9,7 +9,7 @@ include 'navbar.php';
 <div class="container">
   <h4 class="text-primary"> Register to STEPS website </h4>
   <p class="text-muted"> You should be STEPS staff to register </p>
-    <form method = "post" action="regis.php"> 
+    <form method = "post" action="regis.php">
       <div class="input-group col-xs-6 col-s-4 col-m-4">
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
             <input id="student_id" type="text" class="form-control" name="student_id" placeholder="Student ID">
@@ -42,18 +42,18 @@ include 'navbar.php';
 
         $nameEng = $row['NameEng'];
         $nickname = $row['Nickname'];
-        $teamID = $row['Team'];
+        $teamID = $row['TeamID'];
         $email = $row['Email'];
 
         if($row['StudentID'] != NULL) {
-            $query_team = "SELECT TeamName FROM Teams WHERE teamID=$teamID;";
+            $query_team = "SELECT TeamName FROM Teams WHERE TeamID=$teamID;";
             $result_team = $connect->query($query_team);
             $rowTeam = $result_team->fetch_assoc();
 
-            echo "<div class=\"container\"> 
+            echo "<div class=\"container\">
                 <p></p>
                 <p></p>
-                <TABLE> 
+                <TABLE>
                 <TR>
                 <TD> student ID </TD><TD> :  ".$row['StudentID']." <TD></TR>
                 <TR>
@@ -66,7 +66,7 @@ include 'navbar.php';
                 <TD> email  </TD><TD>:  ". $email."<TD></TR></TABLE>";
 
                 if (($row['FacebookID'] !='') or ($row['FacebookID']!= NULL)   ){
-                   echo " <p></p> <p class=\"text-muted\"> This member has already registered </p>";    
+                   echo " <p></p> <p class=\"text-muted\"> This member has already registered </p>";
                     }
                 else{
                     echo "
@@ -74,7 +74,7 @@ include 'navbar.php';
                     <a href=\"https://www.facebook.com/dialog/oauth?client_id=504893919875225&redirect_uri=".$my_url."&scope=email\" class=\"btn btn-info my-2 my-sm-0\">
                     Register via facebook
                     </a>
-                    </div>";    
+                    </div>";
                 }}
 else{
         echo "<div class=\"container\">
@@ -105,7 +105,7 @@ else{
 
 
         $response = json_decode(file_get_contents($token_url));
-        
+
         //$params = null;
         //parse_str($response,$params);
         //$_SESSION['response'] = @file_get_contents($token_url);
@@ -126,13 +126,13 @@ else{
 
             $query = "SELECT * FROM Members
                     WHERE StudentID ='" . $student_id . "';";
-            session_unset(); 
+            session_unset();
             $query_result = $connect->query($query);
             $fbRow=$query_result->fetch_assoc();
 
             $sql = "UPDATE Members SET FacebookID = '$facebook_id' WHERE StudentID =  $student_id ;";
             if ($connect->query($sql) === TRUE) {
-                
+
                 $_SESSION['nickname'] = $fbRow['Nickname'];
                 $_SESSION['email'] = $fbRow['Email'];
                 $_SESSION['facebook_id'] = $fbRow['FacebookID'];
@@ -146,14 +146,14 @@ else{
           } else {
                 echo "Error updating record: " . $connect->error;
             }
- 
 
 
-            
+
+
         }
-           
 
-        
+
+
     }
 
     /* $fbid = null;
@@ -171,15 +171,15 @@ else{
             . "&client_secret=" . $app_secret . "&code=" . $code
             . "&scope=email";
         echo $token_url;
-        
+
         $response = @file_get_contents($token_url);
-        
+
         $params = null;
         parse_str($response,$params);
         echo $params['access_token'];
         $_SESSION['response'] = @file_get_contents($token_url);
 
-       
+
             //echo "<br><br>" . $token_url;
         $graph_url = "https://graph.facebook.com/me?fields=id,name,email&access_token=" . $params['access_token'];
         $user = json_decode(file_get_contents($graph_url));
@@ -195,7 +195,7 @@ else{
             $query = "UPDATE members SET fbid = ".$facebook_id."WHERE studentid=".$_SESSION['student_id'];
             $query_result = $conn->query($query);}*/
 
-  
+
 
   ?>
 
