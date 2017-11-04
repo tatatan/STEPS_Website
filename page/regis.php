@@ -96,7 +96,7 @@ else{
         $code = $_GET['code'];
         //echo "code=" . $code;
         $app_id = "504893919875225";
-        $app_secret = "f05c08e4317152d98a1a59d4cc32ddbe";
+        $app_secret = "71359ff0b37716abe9c02c8130d20898";
 
         $token_url = "https://graph.facebook.com/oauth/access_token?"
             . "client_id=" . $app_id . "&redirect_uri=" . urlencode($my_url)
@@ -136,7 +136,7 @@ else{
                 $_SESSION['nickname'] = $fbRow['Nickname'];
                 $_SESSION['email'] = $fbRow['Email'];
                 $_SESSION['facebook_id'] = $fbRow['FacebookID'];
-                $_SESSION['team'] = $fbRow['Team'];
+                $_SESSION['team'] = $fbRow['TeamID'];
                 echo "<div class=\"container\"
                 <p></p><p class=\"text-primary\"> Register successfully </p>";
                 echo "<p></p>
