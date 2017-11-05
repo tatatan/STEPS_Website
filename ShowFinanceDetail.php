@@ -24,17 +24,17 @@
   						<h1>Requisition Details#";
   				echo "".$_GET['id']."</h1></div>";
 				if(!empty($_POST['changeApp'])){
-					$change_cmd = "UPDATE financerequests SET Approvement=1 WHERE FinanceRequestID='".$_GET['id']."'";
+					$change_cmd = "UPDATE FinanceRequests SET Approvement=1 WHERE FinanceRequestID='".$_GET['id']."'";
 					$connect->query($change_cmd);
 				}
 
 				if(!empty($_POST['changeStat'])){
 					$changest=$_POST['changeStat'];
-					$change_cmd2 = "UPDATE financerequests SET Status='".$changest."' WHERE FinanceRequestID='".$_GET['id']."'";
+					$change_cmd2 = "UPDATE FinanceRequests SET Status='".$changest."' WHERE FinanceRequestID='".$_GET['id']."'";
 					$connect->query($change_cmd2);
 				}
 
-				$show_info = "SELECT * FROM financedetails WHERE FinanceRequestID='".$_GET['id']."'";
+				$show_info = "SELECT * FROM FinanceDetails WHERE FinanceRequestID='".$_GET['id']."'";
 				$result = $connect->query($show_info);
 				$sum = 0 ;
 				if ($result->num_rows > 0) {
@@ -56,7 +56,7 @@
 				}
 
 				$show_info2 = "SELECT Proposer,Field,PhoneNumber,Approvement,Status,Comment
-								FROM financerequests WHERE FinanceRequestID='".$_GET['id']."'";
+								FROM FinanceRequests WHERE FinanceRequestID='".$_GET['id']."'";
 				$result2 = $connect->query($show_info2);
 				$row2 = $result2->fetch_assoc();
 				$prop = $row2["Proposer"];

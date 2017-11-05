@@ -39,9 +39,7 @@
 
 
 
-            $query = sprintf("SELECT * FROM members
-                    WHERE facebookID = $facebookID ");
-            echo $query;
+            $query = "SELECT * FROM Members WHERE FacebookID = $facebookID ";
 
 
             $result = mysqli_query($connect,$query);

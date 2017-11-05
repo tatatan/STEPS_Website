@@ -1,5 +1,6 @@
 <?php
 	include "navbar.php";
+	include("connect.php");
 	// create necessary session value for test
 	//include("fake_session.php");
 ?>
@@ -28,7 +29,6 @@
 					// echo empty($_POST['phoneNumber']) ? 'empty':'no';
 					// echo empty($_POST['moreDetails']) ? 'empty':'no';
 
-					include("connect.php");
 
 					$cmd = "SELECT FinanceRequestID FROM FinanceRequests";
 					$result = $connect->query($cmd);
@@ -54,13 +54,6 @@
 			</div>
 			<?php
 				if (!empty($_SESSION['nickname'])){
-					$servername = "localhost";
-					$username = "root";
-					$password = "";
-					// $db = "step";
-					$db = "mydb";
-					$connect = new mysqli($servername, $username, $password, $db);
-
 					if ($connect->connect_error) {
 						die("Connection failed: " . $connect->connect_error);
 					}

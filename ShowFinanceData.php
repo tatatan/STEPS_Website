@@ -28,7 +28,7 @@
 				if ($_SESSION['team_id'] == 5){
 					include("connect.php");
 
-					$show_info = "SELECT * FROM financerequests";
+					$show_info = "SELECT * FROM FinanceRequests";
 					$result = $connect->query($show_info);
 
 					echo '<div class="container">';
