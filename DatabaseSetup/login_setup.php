@@ -1,0 +1,44 @@
+<?php
+include 'connect.php';
+
+$query = "CREATE TABLE Teams (
+TeamID INT(4) UNSIGNED AUTO_INCREMENT,
+TeamName VARCHAR(40) NOT NULL,
+PRIMARY KEY (TeamID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
+$query2= "CREATE TABLE Members(
+MemberID INT(6) UNSIGNED AUTO_INCREMENT ,
+TeamID int(4) UNSIGNED,
+Gender int(2) NOT NULL,
+Password VARCHAR(50) NOT NULL,
+FacebookID VARCHAR(50),
+NameThai VARCHAR(50) NOT NULL,
+NameEng VARCHAR(50) NOT NULL,
+Nickname VARCHAR(50) NOT NULL,
+StudentID VARCHAR(20) NOT NULL,
+Faculty VARCHAR(60) NOT NULL,
+Major VARCHAR(80) NOT NULL,
+Birthday DATE NOT NULL,
+Tel VARCHAR(20) NOT NULL,
+Email VARCHAR(100) NOT NULL,
+LineID VARCHAR(50) NOT NULL,
+Facebook VARCHAR(100) NOT NULL,
+Address VARCHAR(200) NOT NULL,
+Allergic VARCHAR(100) NOT NULL,
+CongenitalDisease VARCHAR(100) NOT NULL,
+ContactMember  VARCHAR(100) NOT NULL,
+ActivityOutsideSteps VARCHAR(100) NOT NULL,
+ColorPrefer VARCHAR(50) NOT NULL,
+Interest VARCHAR(100) NOT NULL,
+KnowingStepsFrom VARCHAR(100) NOT NULL,
+ProfilePicture VARCHAR(1000) NOT NULL,
+PRIMARY KEY (MemberID),
+FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
+ mysqli_query($connect,$query);
+ mysqli_query($connect,$query2);
+
+
+?>
